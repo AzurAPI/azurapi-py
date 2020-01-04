@@ -14,3 +14,9 @@ api.get_ship(name="Enterprise")
 ## Maintainers
 - [August](https://github.com/auguwu)
 - [Spimy](https://github.com/Spimy)
+
+## Support Server
+
+[![](https://discordapp.com/api/guilds/648206344729526272/widget.png?style=banner2)](https://discord.gg/aAEdys8)
+
+Discord Link: https://discord.gg/aAEdys8
