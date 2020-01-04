@@ -1,2 +1,5 @@
-class UnknownShipException(Exception):
+class AzurApiExeception(Exception):
+    pass
+
+class UnknownShipException(AzurApiExeception):
     pass
