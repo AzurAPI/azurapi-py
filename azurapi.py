@@ -48,7 +48,7 @@ class AzurAPI:
         return self.ship_list[ship_id]
 
     def get_ship_by_name(self, ship_name):
-        
+
         # As of now, I cannot think of a better way to do this than nested loops
         for ship_id in self.ship_list:
 
