@@ -1,7 +1,7 @@
 import json
 import requests
 
-from utils import UnknownShipException, is_str_int
+from utils import exceptions, is_str_int
 
 
 # Constants
@@ -29,25 +29,25 @@ class AzurAPI:
     def get_all_ships(self):
         return self.ship_list
 
-    def get_ship_by_id(self, ship_id):
+    def get_ship_by_id(self, sid):
 
         # Makes sure it is an integer if a string was used as input and error for floats
-        if isinstance(ship_id, str) and not is_str_int(ship_id):
+        if isinstance(sid, str) and not is_str_int(sid):
             raise ValueError("a non integer input was given (string)")
-        elif isinstance(ship_id, float):
+        elif isinstance(sid, float):
             raise ValueError("a non integer input was given (float)")
-        elif isinstance(ship_id, int):
-            ship_id = str(ship_id)
+        elif isinstance(sid, int):
+            sid = str(sid)
 
-        if len(ship_id) != 3:
+        if len(sid) != 3:
             raise ValueError("id must be padded to 3 digits long e.g. 077")
 
-        if not ship_id in self.ship_list:
-            raise UnknownShipException("the id provided does not match any ships")
+        if sid not in self.ship_list:
+            raise exceptions.UnknownShipException("the id provided does not match any ships")
 
-        return self.ship_list[ship_id]
+        return self.ship_list[sid]
 
-    def get_ship_by_name(self, ship_name):
+    def get_ship_by_name(self, name):
 
         # As of now, I cannot think of a better way to do this than nested loops
         for ship_id in self.ship_list:
@@ -60,10 +60,10 @@ class AzurAPI:
                     continue
 
                 # Case insensitive check for the name of the ship
-                if ship_names[lang].lower() == ship_name.lower():
+                if ship_names[lang].lower() == name.lower():
                     return self.ship_list[ship_id]
 
-        raise UnknownShipException("the name provided does not match any ships")
+        raise exceptions.UnknownShipException("the name provided does not match any ships")
 
     def get_ship(self, ship):
 
@@ -72,11 +72,11 @@ class AzurAPI:
         # If both failed, raise an error message
         try:
             return self.get_ship_by_id(ship)
-        except (ValueError, UnknownShipException):
+        except (ValueError, exceptions.UnknownShipException):
             try:
                 return self.get_ship_by_name(ship)
-            except UnknownShipException:
-                raise UnknownShipException("the input provided does not match any ships")
+            except exceptions.UnknownShipException:
+                raise exceptions.UnknownShipException("the input provided does not match any ships")
 
 
 if __name__ == "__main__":
