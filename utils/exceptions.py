@@ -1,2 +1,2 @@
 class UnknownShipException(Exception):
-	pass
+    pass
