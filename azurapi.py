@@ -1,7 +1,7 @@
 import json
 import requests
 
-from utils import exceptions, helpers
+from .utils import UnknownShipException, is_str_int
 
 
 # Constants
@@ -29,10 +29,10 @@ class AzurAPI:
     def get_all_ships(self):
         return self.ship_list
 
-    def get_ship_by_id(self, id):
+    def get_ship_by_id(self, ship_id):
 
         # Makes sure it is an integer if a string was used as input and error for floats
-        if isinstance(ship_id, str) and not helpers.is_str_int(ship_id):
+        if isinstance(ship_id, str) and not is_str_int(ship_id):
             raise ValueError("a non integer input was given (string)")
         elif isinstance(ship_id, float):
             raise ValueError("a non integer input was given (float)")
@@ -43,11 +43,11 @@ class AzurAPI:
             raise ValueError("id must be padded to 3 digits long e.g. 077")
 
         if not ship_id in self.ship_list:
-            raise exceptions.UnknownShipException("the id provided does not match any ships")
+            raise UnknownShipException("the id provided does not match any ships")
 
         return self.ship_list[ship_id]
 
-    def get_ship_by_name(self, name):
+    def get_ship_by_name(self, ship_name):
         
         # As of now, I cannot think of a better way to do this than nested loops
         for ship_id in self.ship_list:
@@ -63,7 +63,7 @@ class AzurAPI:
                 if ship_names[lang].lower() == ship_name.lower():
                     return self.ship_list[ship_id]
 
-        raise exceptions.UnknownShipException("the name provided does not match any ships") 
+        raise UnknownShipException("the name provided does not match any ships")
 
     def get_ship(self, ship):
 
@@ -71,12 +71,12 @@ class AzurAPI:
         # Tries to find by id first, then move to find by name if failed
         # If both failed, raise an error message
         try:
-            return self.get_ship_by_id(entry)
-        except (ValueError, exceptions.UnknownShipException):
+            return self.get_ship_by_id(ship)
+        except (ValueError, UnknownShipException):
             try:
-                return self.get_ship_by_name(entry)
-            except exceptions.UnknownShipException:
-                raise exceptions.UnknownShipException("the input provided does not match any ships") 
+                return self.get_ship_by_name(ship)
+            except UnknownShipException:
+                raise UnknownShipException("the input provided does not match any ships")
 
 
 if __name__ == "__main__":
