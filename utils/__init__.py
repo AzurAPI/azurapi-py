@@ -1,2 +1,2 @@
-from .exceptions import UnknownShipException
+from .exceptions import *
 from .helpers import is_str_int

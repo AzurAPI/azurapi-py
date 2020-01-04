@@ -1,7 +1,7 @@
 import json
 import requests
 
-from .utils import UnknownShipException, is_str_int
+from utils import UnknownShipException, is_str_int
 
 
 # Constants
