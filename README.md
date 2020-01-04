@@ -23,19 +23,16 @@ api.get_ship_by_name(name="Enterprise")
 ```
 
 #### Type: ID
+Works with string or integer
 ```py
+api.get_ship(ship=077)
 api.get_ship(ship="077")
 ```
 or
 ```py
 # sid stands for "ship id" since id is a reserved function name in Python
-api.get_ship_by_id(sid="077")
-```
-\
-When searching using ID, it can be an integer instead of string:
-```py
-api.get_ship(ship=077)
 api.get_ship_by_id(sid=077)
+api.get_ship_by_id(sid="077")
 ```
 
 ## Maintainers
