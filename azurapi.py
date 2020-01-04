@@ -10,6 +10,7 @@ SHIP_LIST = f"{MAIN_URL}/azurapi-js-setup/master/ships.json"
 CHAPTER_LIST = f"{MAIN_URL}/azurapi-js-setup/master/chapters.json"
 EQUIPMENT_LIST = f"{MAIN_URL}/azurapi-js-setup/master/equipments.json"
 VERSION_INFO = f"{MAIN_URL}/azurapi-js-setup/master/version-info.json"
+AVAILABLE_LANGS = ["en", "cn", "jp", "kr", "code"]
 
 
 class AzurAPI:
@@ -25,7 +26,7 @@ class AzurAPI:
         equipments_version = self.version_info["equipments"]["version-number"]
         return f"Ships Version: {ships_version} | Equipments Version: {equipments_version}"
 
-    # Not necessary since user can just access the property but just this is just more user friendly
+    # Not necessary since user can just access the property but this is just more user friendly
     def get_all_ships(self):
         return self.ship_list
 
@@ -77,6 +78,48 @@ class AzurAPI:
                 return self.get_ship_by_name(ship)
             except exceptions.UnknownShipException:
                 raise exceptions.UnknownShipException("the input provided does not match any ships")
+        
+    def get_all_ships_by_lang(self, language):
+        
+        if language not in AVAILABLE_LANGS:
+            raise exceptions.UnknownLanguageException("the language provided is not supported")
+        
+        found_ships = []
+    
+        for ship_id in self.ship_list:
+            
+            ship_names = self.ship_list[ship_id]["names"]
+            if ship_names[language] is None:
+                continue
+                
+            found_ships.append(self.ship_list[ship_id])
+        
+        return found_ships
+    
+    def get_all_ships_by_en_names(self):
+        return self.get_all_ships_by_lang("en")
+    
+    def get_all_ships_by_cn_names(self):
+        return self.get_all_ships_by_cn_names("cn")
+    
+    def get_all_ships_by_jp_names(self):
+        return self.get_all_ships_by_cn_names("jp")
+    
+    def get_all_ships_by_kr_names(self):
+        return self.get_all_ships_by_cn_names("kr")
+    
+    def get_all_ships_by_code_names(self):
+        return self.get_all_ships_by_cn_names("code")
+    
+    def get_ship_by_lang(self, language, name):
+        
+        ships_list = self.get_all_ships_by_lang(language)
+        ship = [ship for ship in azurapi.get_all_ships_by_en_names() if ship.get("names")[language] == name]
+        
+        if not ship:
+            raise exceptions.UnknownShipException("the language and name provided does not match any ships")
+        
+        return ship[0]
 
 
 if __name__ == "__main__":
