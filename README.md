@@ -8,7 +8,7 @@ Repository for the Python library for the unofficial Azur Lane API
 from azurapi import AzurApi
 
 api = AzurApi()
-api.get_ship(name="Enterprise")
+api.get_ship(ship="Enterprise")
 ```
 
 ## Maintainers
