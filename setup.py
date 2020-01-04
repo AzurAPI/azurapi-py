@@ -32,6 +32,6 @@ setup(
     keywords=['azurlane', 'azur lane'],
     install_requires=get_requirements(),
     classifiers=[
-        'Proramming Language :: Python :: 3.6'
+        'Programming Language :: Python :: 3.7'
     ]
 )
