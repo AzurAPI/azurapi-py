@@ -23,16 +23,16 @@ api.get_ship_by_name(name="Enterprise")
 ```
 
 #### Type: ID
-Works with string or integer
+Works with string or integer. Do not use integer if the id is less than 100 since integers such as 077 is a syntax error in Python
 ```py
-api.get_ship(ship=077)
-api.get_ship(ship="077")
+api.get_ship(ship=115)
+api.get_ship(ship="115")
 ```
 or
 ```py
 # sid stands for "ship id" since id is a reserved function name in Python
-api.get_ship_by_id(sid=077)
-api.get_ship_by_id(sid="077")
+api.get_ship_by_id(sid=115)
+api.get_ship_by_id(sid="115")
 ```
 
 ## Maintainers
