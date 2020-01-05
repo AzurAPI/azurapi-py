@@ -132,7 +132,7 @@ class AzurAPI:
 
         chapter = code.split("-")
         if not self.chapter_list[chapter[0]][chapter[1]]:
-            raise exceptions.UnknownChapterException(f"Unknown chapter: {level}-{_type}")
+            raise exceptions.UnknownChapterException(f"Unknown chapter: {chapter[0]}-{chapter[1]}")
         else:
             return self.chapter_list[chapter[0]][chapter[1]]
 
