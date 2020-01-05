@@ -89,6 +89,7 @@ class AzurAPI:
         for ship_id in self.ship_list:
             
             ship_names = self.ship_list[ship_id]["names"]
+            
             if ship_names[language] is None:
                 continue
                 
@@ -100,26 +101,25 @@ class AzurAPI:
         return self.get_all_ships_by_lang("en")
     
     def get_all_ships_by_cn_names(self):
-        return self.get_all_ships_by_cn_names("cn")
+        return self.get_all_ships_by_lang("cn")
     
     def get_all_ships_by_jp_names(self):
-        return self.get_all_ships_by_cn_names("jp")
+        return self.get_all_ships_by_lang("jp")
     
     def get_all_ships_by_kr_names(self):
-        return self.get_all_ships_by_cn_names("kr")
+        return self.get_all_ships_by_lang("kr")
     
     def get_all_ships_by_code_names(self):
-        return self.get_all_ships_by_cn_names("code")
+        return self.get_all_ships_by_lang("code")
     
     def get_ship_by_lang(self, language, name):
         
         ships_list = self.get_all_ships_by_lang(language)
-        ship = [ship for ship in azurapi.get_all_ships_by_en_names() if ship.get("names")[language] == name]
         
-        if not ship:
+        try:
+            return next([ship for ship in ships_list if ship.get("names")[language] == name])
+        except StopIteration:
             raise exceptions.UnknownShipException("the language and name provided does not match any ships")
-        
-        return ship[0]
 
 
 if __name__ == "__main__":
