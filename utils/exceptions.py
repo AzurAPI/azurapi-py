@@ -6,3 +6,9 @@ class UnknownShipException(AzurApiException):
 
 class UnknownLanguageException(AzurApiException):
     pass
+
+class UnknownChapterException(AzurApiException):
+    pass
+
+class UnknownDifficultyException(AzurApiException):
+    pass

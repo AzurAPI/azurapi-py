@@ -121,6 +121,32 @@ class AzurAPI:
         
         return ship[0]
 
+    # Not honestly needed but
+    # more user friendly
+    def get_all_chapters(self):
+        return self.chapter_list
+
+    def get_chapter(self, code):
+        if "-" not in code:
+            raise ValueError('The chapter code must be padded as "1-1"')
+
+        chapter = code.split("-")
+        if not self.chapter_list[chapter[0]][chapter[1]]:
+            raise exceptions.UnknownChapterException(f"Unknown chapter: {level}-{_type}")
+        else:
+            return self.chapter_list[chapter[0]][chapter[1]]
+
+    def get_chapter_diff(self, code, diff):
+        if "-" not in code:
+            raise ValueError('The chapter code must be padded as "1-1"')
+
+        chapter = code.split("-")
+        if not self.chapter_list[chapter[0]][chapter[1]]:
+            raise exceptions.UnknownChapterException(f"Unknown chapter: {chapter[0]}-{chapter[1]}")
+        elif not self.chapter_list[chapter[0]][chapter[1]][diff]:
+            raise exceptions.UnknownDifficultyException(f"Unknown chapter difficulty: {diff}")
+
+        return self.chapter_list[chapter[0]][chapter[1]][diff]
 
 if __name__ == "__main__":
     azurapi = AzurAPI()
