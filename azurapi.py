@@ -121,6 +121,30 @@ class AzurAPI:
         except StopIteration:
             raise exceptions.UnknownShipException("the language and name provided does not match any ships")
 
+    def get_chapter(self, chapter, **kwargs):
+
+        # Check if "-" is in the chapter argument
+        if "-" not in chapter:
+            raise ValueError('The chapter code must be padded as "1-1"')
+
+        # Split the chapter
+        [c, s] = chapter.split("-")
+
+        # Python makes these an integer for some reason
+        chap = str(c)
+        stage = str(s)
+        diff = kwargs.get("diff", None)
+
+        if not self.chapter_list[chap][stage]:
+            raise exceptions.UnknownChapterException(f"Unknown chapter: {chap}-{stage}")
+        elif diff is not None:
+            if not self.chapter_list[chap][stage][diff]:
+                raise exceptions.UnknownDifficultyException(f"Unknown difficulty: {chap}-{stage} ({diff})")
+            else:
+                return self.chapter_list[chap][stage][diff]
+        else:
+            return self.chapter_list[chap][stage]
+                
 
 if __name__ == "__main__":
     azurapi = AzurAPI()
