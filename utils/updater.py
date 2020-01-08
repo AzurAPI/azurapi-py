@@ -62,8 +62,8 @@ class AzurApiUpdater:
 
         ship_list = requests.get(SHIP_LIST).json()
         equipment_list = requests.get(EQUIPMENT_LIST).json()
-        version_info = requests.get(VERSION_INFO).json()
         chapter_list = requests.get(CHAPTER_LIST).json()
+        version_info = requests.get(VERSION_INFO).json()
 
         lists = [ship_list, equipment_list,
                  chapter_list, version_info]
