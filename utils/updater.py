@@ -54,7 +54,7 @@ class AzurApiUpdater:
             return update_check
 
     @staticmethod
-    def download_data(file, data):
+    def __download_data(file, data):
         with open(file, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
 
@@ -75,11 +75,11 @@ class AzurApiUpdater:
 
                 # If file exists but is empty, download new data
                 if os.stat(self.files[i]).st_size == 0:
-                    self.download_data(self.files[i], lists[i])
+                    self.__download_data(self.files[i], lists[i])
                 else:
                     continue
             else:
-                self.download_data(self.files[i], lists[i])
+                self.__download_data(self.files[i], lists[i])
 
         # Returns a list e.g. [True, True]
         # element[0] for ships, element[1] for equipments
@@ -87,4 +87,4 @@ class AzurApiUpdater:
 
         for i in range(len(updates)):
             if updates[i]:
-                self.download_data(self.files[i], lists[i])
+                self.__download_data(self.files[i], lists[i])
