@@ -1,7 +1,7 @@
 import json
 import requests
 
-from utils import exceptions, is_str_int
+from utils import exceptions, is_str_int, AzurApiUpdater
 
 
 # Constants
@@ -20,10 +20,18 @@ class AzurAPI:
         self.chapter_list = requests.get(CHAPTER_LIST).json()
         self.equipment_list = requests.get(EQUIPMENT_LIST).json()
         self.version_info = requests.get(VERSION_INFO).json()
+        
+        self.updater = AzurApiUpdater()
+        self.updater.version_update()
 
+    def get_file_data(self, file):
+        with open(file, "r") as data:
+            return json.load(data)
+        
     def get_version(self):
-        ships_version = self.version_info["ships"]["version-number"]
-        equipments_version = self.version_info["equipments"]["version-number"]
+        version_data = self.get_file_data(self.updater.version_file)
+        ships_version = version_data["ships"]["version-number"]
+        equipments_version = version_data["equipments"]["version-number"]
         return f"Ships Version: {ships_version} | Equipments Version: {equipments_version}"
 
     # Not necessary since user can just access the property but this is just more user friendly
