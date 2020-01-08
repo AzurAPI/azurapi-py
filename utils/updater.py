@@ -17,6 +17,7 @@ class AzurApiUpdater:
         self.current_dir = os.getcwd()
         self.data_folder = f"{self.current_dir}\data"
 
+        # Create data folder if it does not exist
         if not os.path.exists(self.data_folder):
             os.mkdir(self.data_folder)
 
@@ -42,6 +43,8 @@ class AzurApiUpdater:
             repo_version = [version_info["ships"]["version-number"],
                             version_info["equipments"]["version-number"]]
 
+            # If local version is less than repo version, an update is needed
+            # Therefore, True is appended to the list
             for i in range(len(local_version)):
                 if local_version[i] < repo_version[i]:
                     update_check.append(True)
@@ -66,7 +69,11 @@ class AzurApiUpdater:
                  chapter_list, version_info]
 
         for i in range(len(self.files)):
+
+            # If file does not exist, download new data
             if os.path.isfile(self.files[i]):
+
+                # If file exists but is empty, download new data
                 if os.stat(self.files[i]).st_size == 0:
                     self.download_data(self.files[i], lists[i])
                 else:
@@ -74,6 +81,8 @@ class AzurApiUpdater:
             else:
                 self.download_data(self.files[i], lists[i])
 
+        # Returns a list e.g. [True, True]
+        # element[0] for ships, element[1] for equipments
         updates = self.update_check()
 
         for i in range(len(updates)):
