@@ -15,13 +15,13 @@ AVAILABLE_LANGS = ["en", "cn", "jp", "kr", "code"]
 
 class AzurAPI:
 
-    def __init__(self):
+    def __init__(self, folder):
         self.ship_list = requests.get(SHIP_LIST).json()
         self.chapter_list = requests.get(CHAPTER_LIST).json()
         self.equipment_list = requests.get(EQUIPMENT_LIST).json()
         self.version_info = requests.get(VERSION_INFO).json()
         
-        self.updater = AzurApiUpdater()
+        self.updater = AzurApiUpdater(folder)
         self.updater.version_update()
 
     def get_file_data(self, file):
@@ -131,5 +131,5 @@ class AzurAPI:
 
 
 if __name__ == "__main__":
-    azurapi = AzurAPI()
+    azurapi = AzurAPI(folder="C:\Users\\acer\\azurapi-py")
     print(azurapi.get_version())
