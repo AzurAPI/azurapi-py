@@ -13,8 +13,8 @@ VERSION_INFO = f"{MAIN_URL}/azurapi-js-setup/master/version-info.json"
 
 class AzurApiUpdater:
 
-    def __init__(self):
-        self.current_dir = os.getcwd()
+    def __init__(self, folder):
+        self.current_dir = folder
         self.data_folder = f"{self.current_dir}\data"
 
         # Create data folder if it does not exist

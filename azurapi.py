@@ -155,5 +155,5 @@ class AzurAPI:
                 
 
 if __name__ == "__main__":
-    azurapi = AzurAPI()
+    azurapi = AzurAPI(folder="C:\Users\\acer\\azurapi-py")
     print(azurapi.get_version())
