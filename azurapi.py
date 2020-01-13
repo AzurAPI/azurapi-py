@@ -1,3 +1,4 @@
+import os
 import json
 import requests
 
@@ -155,5 +156,5 @@ class AzurAPI:
                 
 
 if __name__ == "__main__":
-    azurapi = AzurAPI(folder="C:\Users\\acer\\azurapi-py")
+    azurapi = AzurAPI(folder=os.getcwd())
     print(azurapi.get_version())
