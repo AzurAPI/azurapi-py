@@ -39,6 +39,9 @@ api.get_ship_by_id(sid="115")
 - [August](https://github.com/auguwu)
 - [Spimy](https://github.com/Spimy)
 
+## In Collaboration With
+- [synopNode()](https://www.youtube.com/channel/UCEw406qZnsdCEpRgVvCJzuQ)
+
 ## Support Server
 
 [![](https://discordapp.com/api/guilds/648206344729526272/widget.png?style=banner2)](https://discord.gg/aAEdys8)
