@@ -12,3 +12,6 @@ class UnknownChapterException(AzurApiException):
 
 class UnknownDifficultyException(AzurApiException):
     pass
+
+class UnknownMemoryException(AzurApiException):
+    pass

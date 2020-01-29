@@ -11,18 +11,53 @@ SHIP_LIST = f"{MAIN_URL}/azurapi-js-setup/master/ships.json"
 CHAPTER_LIST = f"{MAIN_URL}/azurapi-js-setup/master/chapters.json"
 EQUIPMENT_LIST = f"{MAIN_URL}/azurapi-js-setup/master/equipments.json"
 VERSION_INFO = f"{MAIN_URL}/azurapi-js-setup/master/version-info.json"
+MEMORIES_INFO = f"{MAIN_URL}/azurapi-js-setup/master/memories.json"
 AVAILABLE_LANGS = ["en", "cn", "jp", "kr", "code"]
-
+AVAILABLE_MEMORIES = [
+    "prologue", "toraToraTora", "battleOfCoralSea", "midwayShowdown", 
+    "unlockFateSimulation", "enterTheMeowfficers", "unlockTheNewResearchFeature", 
+    "divergentChessboardOppositeColored", "visitorsDyedInRed", "fallenWings", 
+    "visitorsFromAnotherDimensionMissionCutscenes", "visitorsFromAnotherDimensionStageCutscenes", 
+    "wintersCrown", "inkStainedSteelSakura", "irisOfLightAndDark", 
+    "fantasticalEncounterStageCutscenes", "fantasticalEncounterDailyLife", "fantasticalEncounterSpecial", 
+    "crimsonEchoes", "virtualConnectionSynchronicityDailyMemorabilia", 
+    "virtualConnectionSynchronicityPurification", "virtualConnectionSynchronicityTask", "scherzoOfIronAndBlood", 
+    "ashenSimulacrum", "empyrealTragicomedy", "crescendoOfPolaris", "lookingGlassOfFactAndFictionMainStory", 
+    "lookingGlassOfFactAndFictionFunsies", "swirlingCherryBlossoms", "powerHopeAndPlans", "tanabataFestival", 
+    "aDayGettingAlongWithHoushou", "leadColorRemembrance", "yatSenBonds", "midAutumnFestival", "gloriousBattle", 
+    "witchesEve", "bitsOfCourage", "livelyAfternoonTeaParty", "sacredLoveAndPeace", "lunarNewYearCelebration", 
+    "winterOffensive", "thePursuitOfGrafSpee", "anShansColoringBook", "fuShunsGreatAdventure", "seaStarOnShore", 
+    "flowerFestival", "sakuraSchoolFestival", "theWarGodsReturn", "recentlyAyanamiSeems", "year36ZClassZ23Sensei", 
+    "ladyOfTomorrow", "summerHotPotCompetition", "moonlitOverture", "angelOrDevilInWhite", "midsummerSagittarius", 
+    "mikasasModelMuseum", "ceremonialGala", "theSpecialBanquet", "sparklingBattleStar", "royalMaidsBattleRoyale", 
+    "trickOrTreatHalloweenNight", "theSolomonRanger", "operationChristmas", "blessedNewYear", "lunarNewYayYayYear", 
+    "airRaidDrillsWithEssex", "starrySkyOverTheArcticFjord", "operationEscapeFromPort", "oneSmallPromise", 
+    "scienceRules", "aPrayerForPeace", "javelinsMonthlyManga", "wallflowerInTheCorner", "approachingStorm", 
+    "superstarOfTheBlueSeas", "summerFestival", "specialStory", "sweptAwayInTheMoment", "crosswave", 
+    "theEnigmaAndTheShark", "certainDayInPolaris", "chaoticHalloweenNight", "christmasParty", "blessingsAndTidings", 
+    "armoredTrooperVotoms", "akashisCommission", "longIslandsInnerPeace", "theLuckyCrane", 
+    "callMeYukikazeTheGreat", "myWonderfulMemories", "hammannsObservationRecord", "redSpiderLilysLove", 
+    "knightsAwards", "gloriousInterlude", "afterTheRainComesTheSun", "bestPictures", "aDateWithAtago", 
+    "pureWhitePoem", "journSurcouf", "mileTheDancingAngel", "theMelancholyOfAPrincessChevalier", "schmelzen", 
+    "centaurAndThePortElders", "hieisBanquet", "theCloudyMask", 
+    "submarineSubterfuge", "enterpriseTroubles", "taihouBodyAndSoul", "enterAkatsukiTheNinja", 
+    "praiseToTranquility", "anEasilyFlusteredGirlsStory", "mysteriousRabbitAlien", "shiranuiTheDoItAllShopkeeper", 
+    "sugaryConcord", "lightCarrierRyuujouMovingOut", "gentleAndSweetOoshio", "ashigaraAdvance", 
+    "togetherWithSouryuu", "theTimidBlackCat", "mySistersGrowthSpurt", "loadedWithLeadAndLove", 
+    "siriusImprovementPlan", "theRoyalKnight", "travelLogOfSaffron", 
+    "aSmallOccurrence", "anotherLeader", "aKnightsPromise", "imNotAKid", "storiaDiRosa"
+]
 
 class AzurAPI:
 
-    def __init__(self):
+    def __init__(self, folder):
         self.ship_list = requests.get(SHIP_LIST).json()
         self.chapter_list = requests.get(CHAPTER_LIST).json()
         self.equipment_list = requests.get(EQUIPMENT_LIST).json()
         self.version_info = requests.get(VERSION_INFO).json()
+        self.memories_info = requests.get(MEMORIES_INFO).json()
         
-        self.updater = AzurApiUpdater()
+        self.updater = AzurApiUpdater(folder)
         self.updater.version_update()
 
     def get_file_data(self, file):
@@ -134,7 +169,7 @@ class AzurAPI:
 
         # Check if "-" is in the chapter argument
         if "-" not in chapter:
-            raise ValueError('The chapter code must be padded as "1-1"')
+            raise ValueError("The chapter code must be padded as '1-1'")
 
         # Split the chapter
         [c, s] = chapter.split("-")
@@ -154,6 +189,14 @@ class AzurAPI:
         else:
             return self.chapter_list[chap][stage]
                 
+    def get_memory(self, memory):
+
+        # Lowercase the memory argument so we won't get the unknown memory exception
+        mem = memory.lower()
+        if mem in AVAILABLE_MEMORIES:
+            return self.memories_info[mem]
+        else:
+            raise exceptions.UnknownMemoryException(f'Unknown memory to view: "{memory}"')
 
 if __name__ == "__main__":
     azurapi = AzurAPI(folder=os.getcwd())
