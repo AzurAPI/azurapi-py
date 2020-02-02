@@ -13,40 +13,7 @@ EQUIPMENT_LIST = f"{MAIN_URL}/azurapi-js-setup/master/equipments.json"
 VERSION_INFO = f"{MAIN_URL}/azurapi-js-setup/master/version-info.json"
 MEMORIES_INFO = f"{MAIN_URL}/azurapi-js-setup/master/memories.json"
 AVAILABLE_LANGS = ["en", "cn", "jp", "kr", "code"]
-AVAILABLE_MEMORIES = [
-    "prologue", "toraToraTora", "battleOfCoralSea", "midwayShowdown", 
-    "unlockFateSimulation", "enterTheMeowfficers", "unlockTheNewResearchFeature", 
-    "divergentChessboardOppositeColored", "visitorsDyedInRed", "fallenWings", 
-    "visitorsFromAnotherDimensionMissionCutscenes", "visitorsFromAnotherDimensionStageCutscenes", 
-    "wintersCrown", "inkStainedSteelSakura", "irisOfLightAndDark", 
-    "fantasticalEncounterStageCutscenes", "fantasticalEncounterDailyLife", "fantasticalEncounterSpecial", 
-    "crimsonEchoes", "virtualConnectionSynchronicityDailyMemorabilia", 
-    "virtualConnectionSynchronicityPurification", "virtualConnectionSynchronicityTask", "scherzoOfIronAndBlood", 
-    "ashenSimulacrum", "empyrealTragicomedy", "crescendoOfPolaris", "lookingGlassOfFactAndFictionMainStory", 
-    "lookingGlassOfFactAndFictionFunsies", "swirlingCherryBlossoms", "powerHopeAndPlans", "tanabataFestival", 
-    "aDayGettingAlongWithHoushou", "leadColorRemembrance", "yatSenBonds", "midAutumnFestival", "gloriousBattle", 
-    "witchesEve", "bitsOfCourage", "livelyAfternoonTeaParty", "sacredLoveAndPeace", "lunarNewYearCelebration", 
-    "winterOffensive", "thePursuitOfGrafSpee", "anShansColoringBook", "fuShunsGreatAdventure", "seaStarOnShore", 
-    "flowerFestival", "sakuraSchoolFestival", "theWarGodsReturn", "recentlyAyanamiSeems", "year36ZClassZ23Sensei", 
-    "ladyOfTomorrow", "summerHotPotCompetition", "moonlitOverture", "angelOrDevilInWhite", "midsummerSagittarius", 
-    "mikasasModelMuseum", "ceremonialGala", "theSpecialBanquet", "sparklingBattleStar", "royalMaidsBattleRoyale", 
-    "trickOrTreatHalloweenNight", "theSolomonRanger", "operationChristmas", "blessedNewYear", "lunarNewYayYayYear", 
-    "airRaidDrillsWithEssex", "starrySkyOverTheArcticFjord", "operationEscapeFromPort", "oneSmallPromise", 
-    "scienceRules", "aPrayerForPeace", "javelinsMonthlyManga", "wallflowerInTheCorner", "approachingStorm", 
-    "superstarOfTheBlueSeas", "summerFestival", "specialStory", "sweptAwayInTheMoment", "crosswave", 
-    "theEnigmaAndTheShark", "certainDayInPolaris", "chaoticHalloweenNight", "christmasParty", "blessingsAndTidings", 
-    "armoredTrooperVotoms", "akashisCommission", "longIslandsInnerPeace", "theLuckyCrane", 
-    "callMeYukikazeTheGreat", "myWonderfulMemories", "hammannsObservationRecord", "redSpiderLilysLove", 
-    "knightsAwards", "gloriousInterlude", "afterTheRainComesTheSun", "bestPictures", "aDateWithAtago", 
-    "pureWhitePoem", "journSurcouf", "mileTheDancingAngel", "theMelancholyOfAPrincessChevalier", "schmelzen", 
-    "centaurAndThePortElders", "hieisBanquet", "theCloudyMask", 
-    "submarineSubterfuge", "enterpriseTroubles", "taihouBodyAndSoul", "enterAkatsukiTheNinja", 
-    "praiseToTranquility", "anEasilyFlusteredGirlsStory", "mysteriousRabbitAlien", "shiranuiTheDoItAllShopkeeper", 
-    "sugaryConcord", "lightCarrierRyuujouMovingOut", "gentleAndSweetOoshio", "ashigaraAdvance", 
-    "togetherWithSouryuu", "theTimidBlackCat", "mySistersGrowthSpurt", "loadedWithLeadAndLove", 
-    "siriusImprovementPlan", "theRoyalKnight", "travelLogOfSaffron", 
-    "aSmallOccurrence", "anotherLeader", "aKnightsPromise", "imNotAKid", "storiaDiRosa"
-]
+
 
 class AzurAPI:
 
@@ -61,7 +28,7 @@ class AzurAPI:
         self.updater.version_update()
 
     def get_file_data(self, file):
-        with open(file, "r") as data:
+        with open(file, "r", encoding="utf8") as data:
             return json.load(data)
         
     def get_version(self):
@@ -72,9 +39,11 @@ class AzurAPI:
 
     # Not necessary since user can just access the property but this is just more user friendly
     def get_all_ships(self):
-        return self.ship_list
+        return self.get_file_data(self.updater.ships_file)
 
     def get_ship_by_id(self, sid):
+        
+        ship_list = self.get_file_data(self.updater.ships_file)
 
         # Makes sure it is an integer if a string was used as input and error for floats
         if isinstance(sid, str) and not is_str_int(sid):
@@ -87,17 +56,19 @@ class AzurAPI:
         if len(sid) != 3:
             raise ValueError("id must be padded to 3 digits long e.g. 077")
 
-        if sid not in self.ship_list:
-            raise exceptions.UnknownShipException("the id provided does not match any ships")
+        if sid not in ship_list:
+            raise excetions.UnknownShipException("the id provided does not match any ships")
 
-        return self.ship_list[sid]
+        return ship_list[sid]
 
     def get_ship_by_name(self, name):
+        
+        ship_list = self.get_file_data(self.updater.ships_file)
 
         # As of now, I cannot think of a better way to do this than nested loops
-        for ship_id in self.ship_list:
+        for ship_id in ship_list:
 
-            ship_names = self.ship_list[ship_id]["names"]
+            ship_names = ship_list[ship_id]["names"]
             for lang in ship_names:
 
                 # I validated None just in case a name is missing somewhere
@@ -106,7 +77,7 @@ class AzurAPI:
 
                 # Case insensitive check for the name of the ship
                 if ship_names[lang].lower() == name.lower():
-                    return self.ship_list[ship_id]
+                    return ship_list[ship_id]
 
         raise exceptions.UnknownShipException("the name provided does not match any ships")
 
@@ -128,16 +99,18 @@ class AzurAPI:
         if language not in AVAILABLE_LANGS:
             raise exceptions.UnknownLanguageException("the language provided is not supported")
         
+        ship_list = self.get_file_data(self.updater.ships_file)
+        
         found_ships = []
     
-        for ship_id in self.ship_list:
+        for ship_id in ship_list:
             
-            ship_names = self.ship_list[ship_id]["names"]
+            ship_names = ship_list[ship_id]["names"]
             
             if ship_names[language] is None:
                 continue
                 
-            found_ships.append(self.ship_list[ship_id])
+            found_ships.append(ship_list[ship_id])
         
         return found_ships
     
@@ -161,7 +134,7 @@ class AzurAPI:
         ships_list = self.get_all_ships_by_lang(language)
         
         try:
-            return next([ship for ship in ships_list if ship.get("names")[language] == name])
+            return next([ship for ship in ships_list if ship.get("names")[language].lower() == name.lower()])
         except StopIteration:
             raise exceptions.UnknownShipException("the language and name provided does not match any ships")
 
@@ -190,13 +163,14 @@ class AzurAPI:
             return self.chapter_list[chap][stage]
                 
     def get_memory(self, memory):
+        
+        memories = self.get_file_data(self.updater.memories_files)
+        for mem in memories.keys():
+            if memory.lower() == mem.lower():
+                return memories[mem]
 
-        # Lowercase the memory argument so we won't get the unknown memory exception
-        mem = memory.lower()
-        if mem in AVAILABLE_MEMORIES:
-            return self.memories_info[mem]
-        else:
-            raise exceptions.UnknownMemoryException(f'Unknown memory to view: "{memory}"')
+        raise exceptions.UnknownMemoryException(f'Unknown memory to view: "{memory}"')
+
 
 if __name__ == "__main__":
     azurapi = AzurAPI(folder=os.getcwd())
