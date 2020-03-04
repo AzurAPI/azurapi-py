@@ -7,7 +7,7 @@ Repository for the Python library for the unofficial Azur Lane API
 
 ### Importing module and instancing the api
 ```py
-from azurapi import AzurApi
+from azurlane import AzurApi
 api = AzurApi()
 ```
 
@@ -36,7 +36,7 @@ api.get_ship_by_id(sid="115")
 ```
 
 ## Maintainers
-- [August](https://github.com/auguwu)
+- [Noel](https://github.com/nowoel)
 - [Spimy](https://github.com/Spimy)
 
 ## In Collaboration With
