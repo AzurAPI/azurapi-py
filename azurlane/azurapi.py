@@ -16,7 +16,7 @@ AVAILABLE_LANGS = ["en", "cn", "jp", "kr", "code"]
 
 class AzurAPI:
 
-    def __init__(self, folder):
+    def __init__(self, folder = os.getcwd()):
         self.ship_list = requests.get(SHIP_LIST).json()
         self.chapter_list = requests.get(CHAPTER_LIST).json()
         self.equipment_list = requests.get(EQUIPMENT_LIST).json()
@@ -169,7 +169,3 @@ class AzurAPI:
                 return memories[mem]
 
         raise UnknownMemoryException(f'Unknown memory to view: "{memory}"')
-
-if __name__ == "__main__":
-    azurapi = AzurAPI(folder=os.getcwd())
-    print(azurapi.get_version())
