@@ -8,7 +8,7 @@ readme = ""
 
 # Finds the "README.md" file
 # and reads it
-with open("README.md") as file:
+with open("README.rst") as file:
     readme = file.read()
 
 # Setups for Pypi
