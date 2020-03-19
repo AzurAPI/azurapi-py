@@ -1,5 +1,6 @@
 # Azur Lane API
 [![Discord](https://discordapp.com/api/guilds/648206344729526272/embed.png)](https://discord.gg/aAEdys8)
+[![Downloads](https://pepy.tech/badge/azurlane)](https://pepy.tech/project/azurlane)
 
 Repository for the Python library for the unofficial Azur Lane API
 
