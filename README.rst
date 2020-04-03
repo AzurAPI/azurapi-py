@@ -13,8 +13,8 @@ Importing module and instancing the api
 
 .. code:: py
 
-    from azurlane import AzurApi
-    api = AzurApi()
+    from azurlane.azurapi import AzurAPI
+    api = AzurAPI()
 
 Getting ship information
 ~~~~~~~~~~~~~~~~~~~~~~~~
