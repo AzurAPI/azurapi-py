@@ -96,3 +96,7 @@ class AzurApiUpdater:
     def updateEquipmentsData(self):
         equipment_list = requests.get(EQUIPMENT_LIST).json()
         self.__download_data(self.equipments_file, equipment_list)
+        
+    def updateShipsData(self):
+        ship_list = requests.get(EQUIPMENT_LIST).json()
+        self.__download_data(self.ships_file, ship_list)
