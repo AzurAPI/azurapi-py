@@ -160,40 +160,7 @@ class AzurAPI:
     getShipByNameJp = getShipByJapaneseName
     getShipByNameKr = getShipByKoreanName
     getShipByNameOfficial = getShipByOfficialName
-
-    def getChapter(self, chapter, **kwargs):
-
-        # Check if "-" is in the chapter argument
-        if "-" not in chapter:
-            raise ValueError("The chapter code must be padded as '1-1'")
-
-        # Split the chapter
-        [c, s] = chapter.split("-")
-
-        # Python makes these an integer for some reason
-        chap = str(c)
-        stage = str(s)
-        diff = kwargs.get("diff", None)
-
-        if not self.chapter_list[chap][stage]:
-            raise UnknownChapterException(f"Unknown chapter: {chap}-{stage}")
-        elif diff is not None:
-            if not self.chapter_list[chap][stage][diff]:
-                raise UnknownDifficultyException(f"Unknown difficulty: {chap}-{stage} ({diff})")
-            else:
-                return self.chapter_list[chap][stage][diff]
-        else:
-            return self.chapter_list[chap][stage]
-                
-    def getMemory(self, memory):
-        
-        memories = self.__get_file_data(self.updater.memories_files)
-        for mem in memories.keys():
-            if memory.lower() == mem.lower():
-                return memories[mem]
-
-        raise UnknownMemoryException(f'Unknown memory to view: "{memory}"')
-
+    
     def getAllShipsFromFaction(self, faction):
                 
         try:
@@ -212,3 +179,39 @@ class AzurAPI:
     # Alternative names for the same method
     getAllShipsFromNation = getAllShipsFromFaction
     getAllShipsFromNationality = getAllShipsFromFaction
+
+    def getChapter(self, chapter, **kwargs):
+    
+        # Check if "-" is in the chapter argument
+        if "-" not in chapter:
+            raise ValueError("The chapter code must be padded as '1-1'")
+
+        # Split the chapter
+        [c, s] = chapter.split("-")
+
+        # Python makes these an integer for some reason
+        chap = str(c)
+        stage = str(s)
+        diff = kwargs.get("diff", None)
+        
+        try:
+            if not self.chapter_list[chap][stage]:
+                raise UnknownChapterException(f"Unknown chapter: {chap}-{stage}")
+            elif diff is not None:
+                if not self.chapter_list[chap][stage][diff]:
+                    raise UnknownDifficultyException(f"Unknown difficulty: {chap}-{stage} ({diff})")
+                else:
+                    return self.chapter_list[chap][stage][diff]
+            else:
+                return self.chapter_list[chap][stage]
+        except KeyError:
+            raise UnknownDifficultyException(f"Unknown chapter: {chap}-{stage}")
+                
+    def getMemory(self, memory):
+        
+        memories = self.__get_file_data(self.updater.memories_files)
+        for mem in memories.keys():
+            if memory.lower() == mem.lower():
+                return memories[mem]
+
+        raise UnknownMemoryException(f'Unknown memory to view: "{memory}"')
