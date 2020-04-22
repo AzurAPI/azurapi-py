@@ -125,7 +125,7 @@ class AzurAPI:
     def getAllShipsByKoreanNames(self):
         return self.getAllShipsByLang("kr")
     
-    def getAllShipsByKoreanName(self):
+    def getAllShipsByOfficialName(self):
         return self.getAllShipsByLang("code")
     
     def getShipByLang(self, language, name):
@@ -149,7 +149,7 @@ class AzurAPI:
     def getShipByKoreanName(self, name):
         return self.getShipByLang("kr", name)
     
-    def getShipByCodeName(self, name):
+    def getShipByOfficialName(self, name):
         return self.getShipByLang("code", name)
     
     # Alternative names for the same method
@@ -157,7 +157,7 @@ class AzurAPI:
     getShipByNameCn = getShipByChinesehName
     getShipByNameJp = getShipByJapaneseName
     getShipByNameKr = getShipByKoreanName
-    getShipByNameCode = getShipByCodeName
+    getShipByNameOfficial = getShipByOfficialName
 
     def getChapter(self, chapter, **kwargs):
 
