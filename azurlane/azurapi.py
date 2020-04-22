@@ -12,7 +12,7 @@ CHAPTER_LIST = f"{MAIN_URL}/azurapi-js-setup/master/chapters.json"
 EQUIPMENT_LIST = f"{MAIN_URL}/azurapi-js-setup/master/equipments.json"
 VERSION_INFO = f"{MAIN_URL}/azurapi-js-setup/master/version-info.json"
 MEMORIES_INFO = f"{MAIN_URL}/azurapi-js-setup/master/memories.json"
-AVAILABLE_LANGS = ["en", "cn", "jp", "kr", "code"]
+AVAILABLE_LANGS = ["en", "cn", "jp", "kr", "code", "official"]
 
 class AzurAPI:
 
@@ -98,6 +98,8 @@ class AzurAPI:
         if language not in AVAILABLE_LANGS:
             raise UnknownLanguageException("the language provided is not supported")
         
+        language = "code" if language == "official" else language
+        
         ship_list = self.__get_file_data(self.updater.ships_file)
         
         found_ships = []
@@ -131,10 +133,10 @@ class AzurAPI:
     def getShipByLang(self, language, name):
         
         ships_list = self.getAllShipsByLang(language)
-        
+
         try:
-            return next([ship for ship in ships_list if ship.get("names")[language].lower() == name.lower()])
-        except StopIteration:
+            return [ship for ship in ships_list if ship.get("names")[language].lower() == name.lower()][0]
+        except (StopIteration, TypeError, IndexError):
             raise UnknownShipException("the language and name provided does not match any ships")
         
     def getShipByEnglishName(self, name):
