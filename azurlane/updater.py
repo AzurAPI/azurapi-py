@@ -31,7 +31,7 @@ class AzurApiUpdater:
                       self.chapters_file, self.version_file,
                       self.memories_files]
 
-    def update_check(self):
+    def checkForNewUpdate(self):
 
         update_check = []
         version_info = requests.get(VERSION_INFO).json()
@@ -60,7 +60,7 @@ class AzurApiUpdater:
         with open(file, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
 
-    def version_update(self):
+    def update(self):
 
         ship_list = requests.get(SHIP_LIST).json()
         equipment_list = requests.get(EQUIPMENT_LIST).json()
@@ -87,7 +87,7 @@ class AzurApiUpdater:
 
         # Returns a list e.g. [True, True]
         # element[0] for ships, element[1] for equipments
-        updates = self.update_check()
+        updates = self.checkForNewUpdate()
 
         for i in range(len(updates)):
             if updates[i]:
