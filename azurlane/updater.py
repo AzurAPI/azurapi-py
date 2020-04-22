@@ -92,3 +92,7 @@ class AzurApiUpdater:
         for i in range(len(updates)):
             if updates[i]:
                 self.__download_data(self.files[i], lists[i])
+
+    def updateEquipmentsData(self):
+        equipment_list = requests.get(EQUIPMENT_LIST).json()
+        self.__download_data(self.equipments_file, equipment_list)
