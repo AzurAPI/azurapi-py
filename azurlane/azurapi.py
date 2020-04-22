@@ -24,25 +24,25 @@ class AzurAPI:
         self.memories_info = requests.get(MEMORIES_INFO).json()
         
         self.updater = AzurApiUpdater(folder)
-        self.updater.version_update()
+        self.updater.update()
 
-    def get_file_data(self, file):
+    def __get_file_data(self, file):
         with open(file, "r", encoding="utf8") as data:
             return json.load(data)
         
-    def get_version(self):
-        version_data = self.get_file_data(self.updater.version_file)
+    def getVersion(self):
+        version_data = self.__get_file_data(self.updater.version_file)
         ships_version = version_data["ships"]["version-number"]
         equipments_version = version_data["equipments"]["version-number"]
         return f"Ships Version: {ships_version} | Equipments Version: {equipments_version}"
 
     # Not necessary since user can just access the property but this is just more user friendly
-    def get_all_ships(self):
-        return self.get_file_data(self.updater.ships_file)
+    def getAllShips(self):
+        return list(self.__get_file_data(self.updater.ships_file).values())
 
-    def get_ship_by_id(self, sid):
+    def getShipById(self, sid):
         
-        ship_list = self.get_file_data(self.updater.ships_file)
+        ship_list = self.__get_file_data(self.updater.ships_file)
 
         # Makes sure it is an integer if a string was used as input and error for floats
         if isinstance(sid, str) and not is_str_int(sid):
@@ -60,9 +60,9 @@ class AzurAPI:
 
         return ship_list[sid]
 
-    def get_ship_by_name(self, name):
+    def getShipByName(self, name):
         
-        ship_list = self.get_file_data(self.updater.ships_file)
+        ship_list = self.__get_file_data(self.updater.ships_file)
 
         # As of now, I cannot think of a better way to do this than nested loops
         for ship_id in ship_list:
@@ -80,25 +80,25 @@ class AzurAPI:
 
         raise UnknownShipException("the name provided does not match any ships")
 
-    def get_ship(self, ship):
+    def getShip(self, ship):
 
         # As per recommended by Python's EAFP rule, nested try/except is used
         # Tries to find by id first, then move to find by name if failed
         # If both failed, raise an error message
         try:
-            return self.get_ship_by_id(ship)
+            return self.getShipById(ship)
         except (ValueError, UnknownShipException):
             try:
-                return self.get_ship_by_name(ship)
+                return self.getShipByName(ship)
             except UnknownShipException:
                 raise UnknownShipException("the input provided does not match any ships")
         
-    def get_all_ships_by_lang(self, language):
+    def getAllShipsByLang(self, language):
         
         if language not in AVAILABLE_LANGS:
             raise UnknownLanguageException("the language provided is not supported")
         
-        ship_list = self.get_file_data(self.updater.ships_file)
+        ship_list = self.__get_file_data(self.updater.ships_file)
         
         found_ships = []
     
@@ -113,31 +113,53 @@ class AzurAPI:
         
         return found_ships
     
-    def get_all_ships_by_en_names(self):
-        return self.get_all_ships_by_lang("en")
+    def getAllShipsByEnglishName(self):
+        return self.getAllShipsByLang("en")
     
-    def get_all_ships_by_cn_names(self):
-        return self.get_all_ships_by_lang("cn")
+    def getAllShipsByChineseName(self):
+        return self.getAllShipsByLang("cn")
     
-    def get_all_ships_by_jp_names(self):
-        return self.get_all_ships_by_lang("jp")
+    def getAllShipsByJapaneseName(self):
+        return self.getAllShipsByLang("jp")
     
-    def get_all_ships_by_kr_names(self):
-        return self.get_all_ships_by_lang("kr")
+    def getAllShipsByKoreanNames(self):
+        return self.getAllShipsByLang("kr")
     
-    def get_all_ships_by_code_names(self):
-        return self.get_all_ships_by_lang("code")
+    def getAllShipsByKoreanName(self):
+        return self.getAllShipsByLang("code")
     
-    def get_ship_by_lang(self, language, name):
+    def getShipByLang(self, language, name):
         
-        ships_list = self.get_all_ships_by_lang(language)
+        ships_list = self.getAllShipsByLang(language)
         
         try:
             return next([ship for ship in ships_list if ship.get("names")[language].lower() == name.lower()])
         except StopIteration:
             raise UnknownShipException("the language and name provided does not match any ships")
+        
+    def getShipByEnglishName(self, name):
+        return self.getShipByLang("en", name)
+    
+    def getShipByChinesehName(self, name):
+        return self.getShipByLang("cn", name)
+    
+    def getShipByJapaneseName(self, name):
+        return self.getShipByLang("jp", name)
+    
+    def getShipByKoreanName(self, name):
+        return self.getShipByLang("kr", name)
+    
+    def getShipByCodeName(self, name):
+        return self.getShipByLang("code", name)
+    
+    # Alternative names for the same method
+    getShipByNameEn = getShipByEnglishName
+    getShipByNameCn = getShipByChinesehName
+    getShipByNameJp = getShipByJapaneseName
+    getShipByNameKr = getShipByKoreanName
+    getShipByNameCode = getShipByCodeName
 
-    def get_chapter(self, chapter, **kwargs):
+    def getChapter(self, chapter, **kwargs):
 
         # Check if "-" is in the chapter argument
         if "-" not in chapter:
@@ -161,11 +183,30 @@ class AzurAPI:
         else:
             return self.chapter_list[chap][stage]
                 
-    def get_memory(self, memory):
+    def getMemory(self, memory):
         
-        memories = self.get_file_data(self.updater.memories_files)
+        memories = self.__get_file_data(self.updater.memories_files)
         for mem in memories.keys():
             if memory.lower() == mem.lower():
                 return memories[mem]
 
         raise UnknownMemoryException(f'Unknown memory to view: "{memory}"')
+
+    def getAllShipsFromFaction(self, faction):
+                
+        try:
+            nation = to_lower_trimmed(get_faction_from_input(faction))
+        except AttributeError:
+            raise UnknownFactionException(f'Unknown faction/nationality: "{faction}"')
+            
+        found_ships = []
+        
+        for ship in self.getAllShips():
+            if to_lower_trimmed(ship["nationality"]) == nation:
+                found_ships.append(ship)
+        
+        return found_ships
+    
+    # Alternative names for the same method
+    getAllShipsFromNation = getAllShipsFromFaction
+    getAllShipsFromNationality = getAllShipsFromFaction
