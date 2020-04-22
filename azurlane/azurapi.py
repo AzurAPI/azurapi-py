@@ -52,8 +52,8 @@ class AzurAPI:
         elif isinstance(sid, int):
             sid = str(sid)
 
-        if len(sid) != 3:
-            raise ValueError("id must be padded to 3 digits long e.g. 077")
+        if len(sid) < 3:
+            sid = "0" + sid
 
         if sid not in ship_list:
             raise UnknownShipException("the id provided does not match any ships")
