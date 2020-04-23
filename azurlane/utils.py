@@ -21,6 +21,9 @@ class UnknownMemoryException(AzurApiException):
 
 class UnknownFactionException(AzurApiException):
     pass
+
+class UnknownEquipmentException(AzurApiException):
+    pass
 #endregion
 
 #region Helpers
