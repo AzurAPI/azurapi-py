@@ -215,3 +215,69 @@ class AzurAPI:
                 return memories[mem]
 
         raise UnknownMemoryException(f'Unknown memory to view: "{memory}"')
+
+    def getAllEquipments(self):
+        return list(self.__get_file_data(self.updater.equipments_file).values())
+    
+    def getAllEquipmentsByLang(self, language):
+        
+        if language not in AVAILABLE_LANGS:
+            raise UnknownLanguageException("the language provided is not supported")
+        
+        if language in ["official", "code"]:
+            return self.getAllEquipments()
+            
+        equipment_list = self.__get_file_data(self.updater.equipments_file)
+
+        found_equipments = []
+    
+        for equipment in equipment_list:
+            
+            equipment_names = equipment_list[equipment]["names"]
+            
+            if equipment_names[language] is None:
+                continue
+                
+            found_equipments.append(equipment_list[equipment])
+        
+        return found_equipments
+    
+    def getEquipmentByLang(self, language, name):
+        
+        if language in ["official", "code"]: 
+            equipment_list = self.__get_file_data(self.updater.equipments_file)
+            
+            for equipment in list(equipment_list.keys()):
+                if name.lower() == equipment.lower(): return equipment_list[equipment]
+            
+            raise UnknownEquipmentException("the language and name provided does not match any equipments")
+        
+        equipment_list = self.getAllEquipmentsByLang(language)
+        
+
+        try:
+            return [equipment for equipment in equipment_list if equipment.get("names")[language].lower() == name.lower()][0]
+        except (StopIteration, TypeError, IndexError):
+            raise UnknownEquipmentException("the language and name provided does not match any equipments")
+        
+    def getEquipmentByEnglishName(self, name):
+        return self.getEquipmentByLang("en", name)
+    
+    def getEquipmentByChineseName(self, name):
+        return self.getEquipmentByLang("cn", name)
+    
+    def getEquipmentByJapaneseName(self, name):
+        return self.getEquipmentByLang("jp", name)
+    
+    def getEquipmentByKoreanName(self, name):
+        return self.getEquipmentByLang("kr", name)
+    
+    def getEquipmentByOfficialName(self, name):
+        return self.getEquipmentByLang("code", name)
+    
+    # Alternative names for the same method
+    getEquipmentByNameEn = getEquipmentByEnglishName
+    getEquipmentByNameCn = getEquipmentByChineseName
+    getEquipmentByNameJp = getEquipmentByJapaneseName
+    getEquipmentByNameKr = getEquipmentByKoreanName
+    getEquipmentByNameOfficial = getEquipmentByOfficialName
