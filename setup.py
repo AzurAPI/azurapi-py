@@ -1,7 +1,7 @@
 from setuptools import setup
 
 # The version number
-version = "1.0.5"
+version = "1.1.0"
 
 # README
 readme = ""
@@ -18,8 +18,8 @@ setup(
     version=version,
     description="Unofficial Azur Lane API library made in Python",
     long_description=str(readme),
-    author="Noel, Spimy",
-    author_email="ohlookitsaugust@gmail.com",
+    author="August, Spimy",
+    author_email="august@augu.dev",
     url="https://github.com/AzurAPI/azurapi-py",
     include_package_data=True,
     keywords=["azurlane", "azur lane"],
