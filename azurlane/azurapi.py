@@ -60,7 +60,7 @@ class AzurAPI:
 
         return ship_list[sid]
 
-    def getShipByName(self, name):
+    def getShipByName(self, ship):
         
         ship_list = self.__get_file_data(self.updater.ships_file)
 
@@ -75,7 +75,7 @@ class AzurAPI:
                     continue
 
                 # Case insensitive check for the name of the ship
-                if ship_names[lang].lower() == name.lower():
+                if ship_names[lang].lower() == ship.lower():
                     return ship_list[ship_id]
 
         raise UnknownShipException("the name provided does not match any ships")
@@ -139,24 +139,24 @@ class AzurAPI:
         except (StopIteration, TypeError, IndexError):
             raise UnknownShipException("the language and name provided does not match any ships")
         
-    def getShipByEnglishName(self, name):
-        return self.getShipByLang("en", name)
+    def getShipByEnglishName(self, ship):
+        return self.getShipByLang("en", ship)
     
-    def getShipByChinesehName(self, name):
-        return self.getShipByLang("cn", name)
+    def getShipByChineseName(self, ship):
+        return self.getShipByLang("cn", ship)
     
-    def getShipByJapaneseName(self, name):
-        return self.getShipByLang("jp", name)
+    def getShipByJapaneseName(self, ship):
+        return self.getShipByLang("jp", ship)
     
-    def getShipByKoreanName(self, name):
-        return self.getShipByLang("kr", name)
+    def getShipByKoreanName(self, ship):
+        return self.getShipByLang("kr", ship)
     
-    def getShipByOfficialName(self, name):
-        return self.getShipByLang("code", name)
+    def getShipByOfficialName(self, ship):
+        return self.getShipByLang("code", ship)
     
     # Alternative names for the same method
     getShipByNameEn = getShipByEnglishName
-    getShipByNameCn = getShipByChinesehName
+    getShipByNameCn = getShipByChineseName
     getShipByNameJp = getShipByJapaneseName
     getShipByNameKr = getShipByKoreanName
     getShipByNameOfficial = getShipByOfficialName

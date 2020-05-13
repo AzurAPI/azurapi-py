@@ -1,7 +1,7 @@
 from setuptools import setup
 
 # The version number
-version = "1.1.0"
+version = "1.1.1"
 
 # README
 readme = ""
