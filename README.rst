@@ -24,13 +24,13 @@ Type: Multilingual
 
 .. code:: py
 
-    api.get_ship(ship="Enterprise")
+    api.getShip(ship="Enterprise")
 
 or
 
 .. code:: py
 
-    api.get_ship_by_name(name="Enterprise")
+    api.getShipByName(name="Enterprise")
 
 Type: ID
 ^^^^^^^^
@@ -40,16 +40,16 @@ Works with string or integer. Do not use integer if the id is less than
 
 .. code:: py
 
-    api.get_ship(ship=115)
-    api.get_ship(ship="115")
+    api.getShip(ship=115)
+    api.getShip(ship="115")
 
 or
 
 .. code:: py
 
     # sid stands for "ship id" since id is a reserved function name in Python
-    api.get_ship_by_id(sid=115)
-    api.get_ship_by_id(sid="115")
+    api.getShipById(sid=115)
+    api.getShipById(sid="115")
 
 Maintainers
 -----------
