@@ -83,13 +83,13 @@ class AzurAPI:
     def getShip(self, ship):
 
         # As per recommended by Python's EAFP rule, nested try/except is used
-        # Tries to find by id first, then move to find by name if failed
+        # Tries to find by name first, then move to find by id if failed
         # If both failed, raise an error message
         try:
-            return self.getShipById(ship)
+            return self.getShipByName(ship)
         except (ValueError, UnknownShipException):
             try:
-                return self.getShipByName(ship)
+                return self.getShipById(ship)
             except UnknownShipException:
                 raise UnknownShipException("the input provided does not match any ships")
         
