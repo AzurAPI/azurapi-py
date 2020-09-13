@@ -38,27 +38,21 @@ class AzurAPI:
 
     # Not necessary since user can just access the property but this is just more user friendly
     def getAllShips(self):
-        return list(self.__get_file_data(self.updater.ships_file).values())
+        return self.__get_file_data(self.updater.ships_file)
 
     def getShipById(self, sid):
         
         ship_list = self.__get_file_data(self.updater.ships_file)
 
-        # Makes sure it is an integer if a string was used as input and error for floats
-        if isinstance(sid, str) and not is_str_int(sid):
-            raise ValueError("a non integer input was given (string)")
-        elif isinstance(sid, float):
-            raise ValueError("a non integer input was given (float)")
-        elif isinstance(sid, int):
-            sid = str(sid)
-
         if len(sid) < 3:
             sid = "0" + sid
 
-        if sid not in ship_list:
+        ship = next((ship for ship in ship_list if ship['id'] == sid), None)
+
+        if ship is None:
             raise UnknownShipException("the id provided does not match any ships")
 
-        return ship_list[sid]
+        return ship
 
     def getShipByName(self, ship):
         
