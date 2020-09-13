@@ -38,47 +38,31 @@ class AzurAPI:
 
     # Not necessary since user can just access the property but this is just more user friendly
     def getAllShips(self):
-        return list(self.__get_file_data(self.updater.ships_file).values())
+        return self.__get_file_data(self.updater.ships_file)
 
     def getShipById(self, sid):
         
         ship_list = self.__get_file_data(self.updater.ships_file)
 
-        # Makes sure it is an integer if a string was used as input and error for floats
-        if isinstance(sid, str) and not is_str_int(sid):
-            raise ValueError("a non integer input was given (string)")
-        elif isinstance(sid, float):
-            raise ValueError("a non integer input was given (float)")
-        elif isinstance(sid, int):
-            sid = str(sid)
-
         if len(sid) < 3:
             sid = "0" + sid
 
-        if sid not in ship_list:
+        ship = next((ship for ship in ship_list if ship['id'] == sid), None)
+
+        if ship is None:
             raise UnknownShipException("the id provided does not match any ships")
 
-        return ship_list[sid]
+        return ship
 
     def getShipByName(self, ship):
         
         ship_list = self.__get_file_data(self.updater.ships_file)
+        ship = next((s for s in ship_list if ship in s['names'].values()), None)
 
-        # As of now, I cannot think of a better way to do this than nested loops
-        for ship_id in ship_list:
+        if ship is None:
+            raise UnknownShipException("the id provided does not match any ships")
 
-            ship_names = ship_list[ship_id]["names"]
-            for lang in ship_names:
-
-                # I validated None just in case a name is missing somewhere
-                if ship_names[lang] is None:
-                    continue
-
-                # Case insensitive check for the name of the ship
-                if ship_names[lang].lower() == ship.lower():
-                    return ship_list[ship_id]
-
-        raise UnknownShipException("the name provided does not match any ships")
+        return ship
 
     def getShip(self, ship):
 
@@ -101,19 +85,7 @@ class AzurAPI:
         language = "code" if language == "official" else language
         
         ship_list = self.__get_file_data(self.updater.ships_file)
-        
-        found_ships = []
-    
-        for ship_id in ship_list:
-            
-            ship_names = ship_list[ship_id]["names"]
-            
-            if ship_names[language] is None:
-                continue
-                
-            found_ships.append(ship_list[ship_id])
-        
-        return found_ships
+        return [ship for ship in ship_list if ship['names'][language] is not None]
     
     def getAllShipsByEnglishName(self):
         return self.getAllShipsByLang("en")
@@ -133,11 +105,12 @@ class AzurAPI:
     def getShipByLang(self, language, name):
         
         ships_list = self.getAllShipsByLang(language)
-
-        try:
-            return [ship for ship in ships_list if ship.get("names")[language].lower() == name.lower()][0]
-        except (StopIteration, TypeError, IndexError):
+        ship = next((ship for ship in ships_list if ship.get("names")[language].lower() == name.lower()), None)
+        
+        if ship is None:
             raise UnknownShipException("the language and name provided does not match any ships")
+
+        return ship
         
     def getShipByEnglishName(self, ship):
         return self.getShipByLang("en", ship)
@@ -168,13 +141,8 @@ class AzurAPI:
         except AttributeError:
             raise UnknownFactionException(f'Unknown faction/nationality: "{faction}"')
             
-        found_ships = []
-        
-        for ship in self.getAllShips():
-            if to_lower_trimmed(ship["nationality"]) == nation:
-                found_ships.append(ship)
-        
-        return found_ships
+        return [ship for ship in self.getAllShips() if to_lower_trimmed(ship['nationality']) == nation]
+
     
     # Alternative names for the same method
     getAllShipsFromNation = getAllShipsFromFaction
