@@ -141,13 +141,8 @@ class AzurAPI:
         except AttributeError:
             raise UnknownFactionException(f'Unknown faction/nationality: "{faction}"')
             
-        found_ships = []
-        
-        for ship in self.getAllShips():
-            if to_lower_trimmed(ship["nationality"]) == nation:
-                found_ships.append(ship)
-        
-        return found_ships
+        return [ship for ship in self.getAllShips() if to_lower_trimmed(ship['nationality']) == nation]
+
     
     # Alternative names for the same method
     getAllShipsFromNation = getAllShipsFromFaction
