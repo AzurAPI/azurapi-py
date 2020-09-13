@@ -6,6 +6,12 @@ class TestStringMethods(unittest.TestCase):
 
     def setUp(self):
         self.api = AzurAPI()
+
+    def test_get_all_ships(self):
+        '''
+        No assertion as this is for general testing
+        '''
+        self.api.getAllShips()
         
     def test_get_ship_by_name(self):
         ship = self.api.getShipByName(ship='Enterprise')
