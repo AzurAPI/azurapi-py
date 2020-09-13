@@ -27,7 +27,22 @@ class TestStringMethods(unittest.TestCase):
 
         ship_by_id = self.api.getShip(ship='077')
         self.assertEqual(ship_by_id['names']['en'], 'Enterprise')
-        
+
+    def test_get_all_ships_by_lang(self):
+        '''
+        Test for one language and assume other languages are correct
+        No assertion as this is for general testing
+        '''
+        self.api.getAllShipsByLang('en')
+
+    def test_get_ship_by_lang(self):
+        '''
+        Test for one language and assume other languages are correct
+        This effectively also tests for getShipsBy<Lang>Name
+        '''
+        ship = self.api.getShipByLang('en', 'Enterprise')
+        self.assertEqual(ship['id'], '077')
+
 
 if __name__ == '__main__':
     unittest.main(failfast=True)
