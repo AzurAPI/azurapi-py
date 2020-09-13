@@ -43,6 +43,12 @@ class TestStringMethods(unittest.TestCase):
         ship = self.api.getShipByLang('en', 'Enterprise')
         self.assertEqual(ship['id'], '077')
 
+    def test_get_all_ships_by_faction(self):
+        '''
+        No assertion as this is for general testing
+        '''
+        self.api.getAllShipsFromFaction(faction='Sakura Empire')
+
 
 if __name__ == '__main__':
     unittest.main(failfast=True)
