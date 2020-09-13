@@ -57,22 +57,12 @@ class AzurAPI:
     def getShipByName(self, ship):
         
         ship_list = self.__get_file_data(self.updater.ships_file)
+        ship = next((s for s in ship_list if ship in s['names'].values()), None)
 
-        # As of now, I cannot think of a better way to do this than nested loops
-        for ship_id in ship_list:
+        if ship is None:
+            raise UnknownShipException("the id provided does not match any ships")
 
-            ship_names = ship_list[ship_id]["names"]
-            for lang in ship_names:
-
-                # I validated None just in case a name is missing somewhere
-                if ship_names[lang] is None:
-                    continue
-
-                # Case insensitive check for the name of the ship
-                if ship_names[lang].lower() == ship.lower():
-                    return ship_list[ship_id]
-
-        raise UnknownShipException("the name provided does not match any ships")
+        return ship
 
     def getShip(self, ship):
 
