@@ -85,19 +85,7 @@ class AzurAPI:
         language = "code" if language == "official" else language
         
         ship_list = self.__get_file_data(self.updater.ships_file)
-        
-        found_ships = []
-    
-        for ship_id in ship_list:
-            
-            ship_names = ship_list[ship_id]["names"]
-            
-            if ship_names[language] is None:
-                continue
-                
-            found_ships.append(ship_list[ship_id])
-        
-        return found_ships
+        return [ship for ship in ship_list if ship['names'][language] is not None]
     
     def getAllShipsByEnglishName(self):
         return self.getAllShipsByLang("en")
@@ -117,11 +105,12 @@ class AzurAPI:
     def getShipByLang(self, language, name):
         
         ships_list = self.getAllShipsByLang(language)
-
-        try:
-            return [ship for ship in ships_list if ship.get("names")[language].lower() == name.lower()][0]
-        except (StopIteration, TypeError, IndexError):
+        ship = next((ship for ship in ships_list if ship.get("names")[language].lower() == name.lower()), None)
+        
+        if ship is None:
             raise UnknownShipException("the language and name provided does not match any ships")
+
+        return ship
         
     def getShipByEnglishName(self, ship):
         return self.getShipByLang("en", ship)
