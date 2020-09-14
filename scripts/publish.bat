@@ -22,7 +22,7 @@ if errorlevel 1 goto twineNotInstalled
 
 :: Now we actually publish!
 echo Now uploading!
-twine upload dist/*
+twine upload ../dist/*
 
 :: Were done with the script, so we won't execute the `notInstalled` section
 goto:eof
