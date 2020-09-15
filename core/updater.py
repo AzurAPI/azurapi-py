@@ -17,14 +17,7 @@ LIST_NAMES = [
     'chapters.json',
     'memories.internal.json'
 ]
-
-LIST_URLS = [
-    f'{MAIN_URL}/{LIST_NAMES[0]}',
-    f'{MAIN_URL}/{LIST_NAMES[1]}',
-    f'{MAIN_URL}/{LIST_NAMES[2]}',
-    f'{MAIN_URL}/{LIST_NAMES[3]}',
-    f'{MAIN_URL}/{LIST_NAMES[4]}'
-]
+LIST_URLS = [f'{MAIN_URL}/{name}' for name in LIST_NAMES]
 
 
 class Updater:
