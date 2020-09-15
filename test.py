@@ -22,7 +22,10 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(ship['names']['en'], 'Enterprise')
 
     def test_get_ship(self):
-        ship_by_name = self.api.getShip(ship='Enterprise')
+        '''
+        Lowecase for 'enterprise' to test case insensitivity
+        '''
+        ship_by_name = self.api.getShip(ship='enterprise')
         self.assertEqual(ship_by_name['id'], '077')
 
         ship_by_id = self.api.getShip(ship='077')
