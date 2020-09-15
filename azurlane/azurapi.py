@@ -57,10 +57,10 @@ class AzurAPI:
     def getShipByName(self, ship):
         
         ship_list = self.__get_file_data(self.updater.ships_file)
-        ship = next((s for s in ship_list if ship in s['names'].values()), None)
+        ship = next((s for s in ship_list if ship.lower() in [sh.lower() for sh in s['names'].values() if sh is not None]), None)
 
         if ship is None:
-            raise UnknownShipException("the id provided does not match any ships")
+            raise UnknownShipException("the name provided does not match any ships")
 
         return ship
 
