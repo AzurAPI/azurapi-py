@@ -3,6 +3,7 @@ import json
 import requests
 from typing import Union
 from pathlib import Path
+from core.exceptions import AzurApiException
 from core.types import IVersionTypes, IUpdateTypes
 
 
@@ -42,8 +43,9 @@ class Updater:
             try:
                 data = requests.get(url).json()
             except:
-                raise Exception(
-                    'Invalid URL provided or data in URL is not JSON.')
+                raise AzurApiException(
+                    'Invalid URL provided or data in URL is not JSON.'
+                )
             else:
                 json.dump(data, f, ensure_ascii=False, indent=4)
 
