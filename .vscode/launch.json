@@ -8,6 +8,6 @@
         "type": "python",
         "request": "launch",
         "program": "azurapi.py",
-        "console": "integratedTerminal"
+        "console": "internalConsole"
     }]
 }
