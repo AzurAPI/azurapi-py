@@ -53,6 +53,17 @@ class AzurApi:
 
         return AzurShip(ship)
 
+    def get_ship(self, ship: str) -> AzurShip:
+        try:
+            return self.get_ship_by_name(ship)
+        except UnknownShipException:
+            try:
+                return self.get_ship_by_id(ship)
+            except UnknownShipException:
+                raise UnknownShipException(
+                    'the argument provided does not match any ships'
+                )
+
 
 if __name__ == "__main__":
     AzurApi()
