@@ -41,7 +41,7 @@ class AzurApi:
 
         return AzurShip(found_ship)
 
-    def get_ship_by_id(self, id):
+    def get_ship_by_id(self, id: str) -> AzurShip:
 
         ships = self.__get_file_data(self.data_files[0])
         ship = next((ship for ship in ships if ship['id'] == id), None)
