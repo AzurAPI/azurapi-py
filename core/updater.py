@@ -3,33 +3,24 @@ import json
 import requests
 from typing import Union
 from pathlib import Path
+from .store import LIST_NAMES
 from core.exceptions import AzurApiException
 from core.types import IVersionTypes, IUpdateTypes
 
 
 # Constants
 MAIN_URL = 'https://raw.githubusercontent.com/AzurAPI/azurapi-js-setup/master'
-
-LIST_NAMES = [
-    'ships.json',
-    'equipments.json',
-    'version-info.json',
-    'chapters.json',
-    'memories.internal.json'
-]
 LIST_URLS = [f'{MAIN_URL}/{name}' for name in LIST_NAMES]
 
 
 class Updater:
 
-    def __init__(self, directory: Union[str, Path]) -> None:
-        self.data_folder = f'{directory}{os.sep}azurapi_data'
+    def __init__(self, data_folder: Union[str, Path]) -> None:
+        self.data_folder = data_folder
 
        # Create data folder if it does not exist
         if not os.path.exists(self.data_folder):
             os.mkdir(self.data_folder)
-
-        self.update()
 
     def __download_data(self, url, file_name):
         with open(f'{self.data_folder}{os.sep}{file_name}', 'w', encoding='utf-8') as f:
