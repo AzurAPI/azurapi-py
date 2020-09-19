@@ -11,12 +11,12 @@ from core.store import LIST_NAMES
 
 class AzurApi:
 
-    def __init__(self, directory: Optional[Union[str, Path]] = os.getcwd(), auto_update: Optional[bool] = True) -> None:
+    def __init__(self, directory: Optional[Union[str, Path]] = os.getcwd(), update_on_init: Optional[bool] = True) -> None:
 
         self.data_folder = f'{directory}{os.sep}azurapi_data'
         self.updater = Updater(self.data_folder)
 
-        if auto_update:
+        if update_on_init:
             self.updater.update()
 
         self.data_files = [
