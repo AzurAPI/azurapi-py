@@ -29,20 +29,15 @@ class AzurApi:
     def get_ship_by_name(self, name: str) -> AzurShip:
         ships = self.__get_file_data(self.data_files[0])
 
-        found_ship = None
         for ship in ships:
-            if name.lower() in [name.lower() for name in ship['names'].values() if name is not None]:
-                found_ship = ship
-                break
+            if name.lower() in [_name.lower() for _name in ship['names'].values() if _name is not None]:
+                return AzurShip(ship)
         else:
             raise UnknownShipException(
                 'the name provided does not match any ships'
             )
 
-        return AzurShip(found_ship)
-
     def get_ship_by_id(self, id: str) -> AzurShip:
-
         ships = self.__get_file_data(self.data_files[0])
         ship = next((ship for ship in ships if ship['id'] == id), None)
 
