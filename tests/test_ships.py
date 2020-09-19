@@ -6,7 +6,7 @@ from core.exceptions import AzurApiException, UnknownShipException
 class TestShip(unittest.TestCase):
 
     def setUp(self):
-        self.api = AzurApi()
+        self.api = AzurApi(update_on_init=False)
 
     def test_get_invalid_ship_by_name(self):
         '''
