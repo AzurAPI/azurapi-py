@@ -1,7 +1,8 @@
 import os
 import json
 from pathlib import Path
-from typing import Union, Optional
+from typing import Dict, Union, Optional
+from core.types import IVersionTypes
 from core.updater import Updater
 from core.entities.ship import AzurShip
 from core.exceptions import UnknownShipException
@@ -25,6 +26,14 @@ class AzurApi:
     def __get_file_data(self, file: Union[str, Path]) -> dict:
         with open(file, 'r', encoding='utf-8') as data:
             return json.load(data)
+
+    def get_version(self) -> Dict[str, int]:
+        version_file = IVersionTypes(self.__get_file_data(self.data_files[2]))
+        versions = {
+            'ships': version_file['ships']['version-number'],
+            'equipments': version_file['equipments']['version-number']
+        }
+        return versions
 
     def get_ship_by_name(self, name: str) -> AzurShip:
         ships = self.__get_file_data(self.data_files[0])
@@ -61,4 +70,5 @@ class AzurApi:
 
 
 if __name__ == "__main__":
-    AzurApi()
+    api = AzurApi()
+    print(api.get_version())
