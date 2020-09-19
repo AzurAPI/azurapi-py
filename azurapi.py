@@ -24,6 +24,9 @@ class AzurApi:
         ]
 
     def __get_file_data(self, file: Union[str, Path]) -> dict:
+        if not self.updater.check_files():
+            self.updater.update()
+
         with open(file, 'r', encoding='utf-8') as data:
             return json.load(data)
 
