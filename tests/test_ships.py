@@ -8,7 +8,7 @@ class TestShip(unittest.TestCase):
     def setUp(self):
         self.api = AzurApi()
 
-    def test_get_invalid_ship(self):
+    def test_get_invalid_ship_by_name(self):
         '''
         Test if error is being raised if the name provided for
         a ship does not exist
@@ -25,5 +25,25 @@ class TestShip(unittest.TestCase):
         if it is case-insensitive by having the argument all lower cased.
         '''
         ship = self.api.get_ship_by_name('enterprise')
+        self.assertEqual(ship.get_english_name(), 'Enterprise')
+        self.assertEqual(ship.get_id(), '077')
+
+    def test_get_invalid_ship_by_id(self):
+        '''
+        Test if error is being raised if the id provided for
+        a ship does not exist
+        '''
+        self.assertRaises(
+            UnknownShipException,
+            self.api.get_ship_by_id,
+            id='not exist'
+        )
+
+    def test_get_ship_by_id(self):
+        '''
+        This tests if getting ship by id is possible
+        and returns the correct ship data.
+        '''
+        ship = self.api.get_ship_by_id('077')
         self.assertEqual(ship.get_english_name(), 'Enterprise')
         self.assertEqual(ship.get_id(), '077')
