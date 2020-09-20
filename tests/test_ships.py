@@ -71,3 +71,25 @@ class TestShip(unittest.TestCase):
         ship_by_id = self.api.get_ship_by_id('077')
         self.assertEqual(ship_by_id.english_name(), 'Enterprise')
         self.assertEqual(ship_by_id.id(), '077')
+
+    def test_get_ship_hunting_range(self):
+        '''
+        Test if hunting range returns None if the hull type
+        is not submarine and returns a tuple if it is.
+        '''
+        non_submarine = self.api.get_ship('enterprise')
+        self.assertEqual(
+            non_submarine.stats().base_stats().hunting_range(),
+            None
+        )
+
+        '''
+        Check if type is list despite typing it as tuple because
+        it actually returns a list and the typing of tuple is so
+        that people does not actually edit the data inside the list.
+        '''
+        submarine = self.api.get_ship('398')
+        self.assertEqual(
+            type(submarine.stats().base_stats().hunting_range()),
+            list
+        )
