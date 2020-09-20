@@ -1,27 +1,6 @@
-from typing import TypedDict, Union, List
-
-
-class _Stats(TypedDict):
-    '''
-    Interface for ship stats
-    '''
-    armor: str
-    reload: str
-    luck: str
-    firepower: str
-    torpedo: str
-    evasion: str
-    speed: str
-    antiair: str
-    aviation: str
-    oil_consumption: str
-    accuracy: str
-    anti_submarine_warfare: str
-
-    # These will only return values for submarines
-    oxygen: Union[str, None]
-    ammunition: Union[str, None]
-    hunting_range: Union[List[List[str]], None]
+from typing import TypedDict, Union, Tuple
+from ..helpers import Stars, Stats
+from ..types.helpers import StarsType, StatLevels
 
 
 class _Slot(TypedDict):
@@ -76,13 +55,8 @@ class AzurShip:
         self.__hull_type: str = ship_data.get('hullType')
         self.__thumbnail: str = ship_data.get('thumbnail')
         self.__rarity: str = ship_data.get('rarity')
-
-        self.__stars: TypedDict('Stars', {
-            'stars': str,  # e.g. ★★☆☆☆
-            'value': int   # e.g. 2
-        }) = ship_data.get('stars')
-
-        self.__stats: _Stats = ship_data.get('stats')
+        self.__stars: StarsType = ship_data.get('stars')
+        self.__stats: StatLevels = ship_data.get('stats')
 
         self.__slots: TypedDict('Slots', {
             '1': _Slot,
@@ -99,23 +73,23 @@ class AzurShip:
             'medal': int
         }) = ship_data.get('scrapValue')
 
-        self.__skills: List[_Skill] = ship_data.get('skills')
-        self.__limit_breaks: List[List[str]] = ship_data.get('limitBreaks')
+        self.__skills: Tuple[_Skill] = ship_data.get('skills')
+        self.__limit_breaks: Tuple[Tuple[str]] = ship_data.get('limitBreaks')
 
         self.__fleet_tech: TypedDict('FleetTech', {
-            'stats_bonus': TypedDict('StatsBonus', {
+            'statsBonus': TypedDict('StatsTypeBonus', {
                 'collection': TypedDict('Collection', {
-                    'applicable': List[str],
+                    'applicable': Tuple[str],
                     'stat': str,
                     'bonus': str
                 }),
-                'max_level': TypedDict('MaxLevel', {
-                    'applicable': List[str],
+                'maxLevel': TypedDict('MaxLevel', {
+                    'applicable': Tuple[str],
                     'stat': str,
                     'bonus': str
                 })
             }),
-            'tech_points': TypedDict('TechPoints', {
+            'techPoints': TypedDict('TechPoints', {
                 'collection': int,
                 'maxLimitBreak': int,
                 'maxLevel': int,
@@ -124,8 +98,8 @@ class AzurShip:
         }) = ship_data.get('fleetTech')
 
         self.__construction: TypedDict('Construction', {
-            'construction_time': str,
-            'available_in': TypedDict('AvailableIn', {
+            'constructionTime': str,
+            'availableIn': TypedDict('AvailableIn', {
                 'light': bool,
                 'heavy': bool,
                 'aviation': bool,
@@ -142,17 +116,20 @@ class AzurShip:
             'voice': Union[_Artist, None]
         }) = ship_data.get('misc')
 
+    def wiki_url(self) -> str:
+        return self.__wiki_url
+
     def id(self) -> str:
         return self.__id
 
-    def all_name_langs(self) -> List[str]:
+    def all_name_langs(self) -> Tuple[str]:
         '''
         Returns a list of all languages that is available for the ship.
         If the name of that language is None, the language will not be in the list.
         '''
         return [name for name in self.__names if name is not None]
 
-    def all_names(self) -> List[str]:
+    def all_names(self) -> Tuple[str]:
         '''
         Returns a list of all names available for the ship.
         If the name in a specific language is None, it will not be in the list.
@@ -173,3 +150,24 @@ class AzurShip:
 
     def korean_name(self) -> Union[str, None]:
         return self.__names.get('kr')
+
+    def ship_class(self) -> str:
+        return self.__ship_class
+
+    def nationality(self) -> str:
+        return self.__nationality
+
+    def hull_type(self) -> str:
+        return self.__hull_type
+
+    def thumbnail(self) -> str:
+        return self.__thumbnail
+
+    def rarity(self) -> str:
+        return self.__rarity
+
+    def stars(self) -> Stars:
+        return Stars(self.__stars)
+
+    def stats(self) -> Stats:
+        return Stats(self.__stats)
