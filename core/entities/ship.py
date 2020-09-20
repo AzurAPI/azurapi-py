@@ -60,10 +60,10 @@ class AzurShip:
     '''
 
     def __init__(self, ship_data: dict) -> None:
-        self.wiki_url: str = ship_data.get('wikiUrl')
-        self.id: str = ship_data.get('id')
+        self.__wiki_url: str = ship_data.get('wikiUrl')
+        self.__id: str = ship_data.get('id')
 
-        self.names: TypedDict('ShipNames', {
+        self.__names: TypedDict('ShipNames', {
             'code': str,
             'en': str,
             'cn': Union[str, None],
@@ -71,38 +71,38 @@ class AzurShip:
             'kr': Union[str, None]
         }) = ship_data.get('names')
 
-        self.ship_class: str = ship_data.get('class')
-        self.nationality: str = ship_data.get('nationality')
-        self.hull_type: str = ship_data.get('hullType')
-        self.thumbnail: str = ship_data.get('thumbnail')
-        self.rarity: str = ship_data.get('rarity')
+        self.__ship_class: str = ship_data.get('class')
+        self.__nationality: str = ship_data.get('nationality')
+        self.__hull_type: str = ship_data.get('hullType')
+        self.__thumbnail: str = ship_data.get('thumbnail')
+        self.__rarity: str = ship_data.get('rarity')
 
-        self.stars: TypedDict('Stars', {
+        self.__stars: TypedDict('Stars', {
             'stars': str,  # e.g. ★★☆☆☆
             'value': int   # e.g. 2
         }) = ship_data.get('stars')
 
-        self.stats: _Stats = ship_data.get('stats')
+        self.__stats: _Stats = ship_data.get('stats')
 
-        self.slots: TypedDict('Slots', {
+        self.__slots: TypedDict('Slots', {
             '1': _Slot,
             '2': _Slot,
             '3': _Slot
         }) = ship_data.get('slots')
 
         # mapped by [key = 'stat type', value = 'enhance value']
-        self.enhance_value: object = ship_data.get('enhanceValue')
+        self.__enhance_value: object = ship_data.get('enhanceValue')
 
-        self.scrap_value: TypedDict('ScrapValue', {
+        self.__scrap_value: TypedDict('ScrapValue', {
             'coin': int,
             'oil': int,
             'medal': int
         }) = ship_data.get('scrapValue')
 
-        self.skills: List[_Skill] = ship_data.get('skills')
-        self.limit_breaks: List[List[str]] = ship_data.get('limitBreaks')
+        self.__skills: List[_Skill] = ship_data.get('skills')
+        self.__limit_breaks: List[List[str]] = ship_data.get('limitBreaks')
 
-        self.fleet_tech: TypedDict('FleetTech', {
+        self.__fleet_tech: TypedDict('FleetTech', {
             'stats_bonus': TypedDict('StatsBonus', {
                 'collection': TypedDict('Collection', {
                     'applicable': List[str],
@@ -123,7 +123,7 @@ class AzurShip:
             })
         }) = ship_data.get('fleetTech')
 
-        self.construction: TypedDict('Construction', {
+        self.__construction: TypedDict('Construction', {
             'construction_time': str,
             'available_in': TypedDict('AvailableIn', {
                 'light': bool,
@@ -134,7 +134,7 @@ class AzurShip:
             })
         }) = ship_data.get('construction')
 
-        self.misc: TypedDict('Miscellaneous', {
+        self.__misc: TypedDict('Miscellaneous', {
             'artist': str,
             'web': Union[_Artist, None],
             'pixiv': Union[_Artist, None],
@@ -143,33 +143,33 @@ class AzurShip:
         }) = ship_data.get('misc')
 
     def id(self) -> str:
-        return self.id
+        return self.__id
 
     def all_name_langs(self) -> List[str]:
         '''
         Returns a list of all languages that is available for the ship.
         If the name of that language is None, the language will not be in the list.
         '''
-        return [name for name in self.names if name is not None]
+        return [name for name in self.__names if name is not None]
 
     def all_names(self) -> List[str]:
         '''
         Returns a list of all names available for the ship.
         If the name in a specific language is None, it will not be in the list.
         '''
-        return [self.names[name] for name in self.names if name is not None]
+        return [self.__names[name] for name in self.__names if name is not None]
 
     def code_name(self) -> str:
-        return self.names.get('code')
+        return self.__names.get('code')
 
     def english_name(self) -> str:
-        return self.names.get('en')
+        return self.__names.get('en')
 
     def chinese_name(self) -> Union[str, None]:
-        return self.names.get('ch')
+        return self.__names.get('ch')
 
     def japanese_name(self) -> Union[str, None]:
-        return self.names.get('jp')
+        return self.__names.get('jp')
 
     def korean_name(self) -> Union[str, None]:
-        return self.names.get('kr')
+        return self.__names.get('kr')
