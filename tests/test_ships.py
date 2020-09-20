@@ -25,8 +25,8 @@ class TestShip(unittest.TestCase):
         if it is case-insensitive by having the argument all lower cased.
         '''
         ship = self.api.get_ship_by_name('enterprise')
-        self.assertEqual(ship.get_english_name(), 'Enterprise')
-        self.assertEqual(ship.get_id(), '077')
+        self.assertEqual(ship.english_name(), 'Enterprise')
+        self.assertEqual(ship.id(), '077')
 
     def test_get_invalid_ship_by_id(self):
         '''
@@ -45,8 +45,8 @@ class TestShip(unittest.TestCase):
         and returns the correct ship data.
         '''
         ship = self.api.get_ship_by_id('077')
-        self.assertEqual(ship.get_english_name(), 'Enterprise')
-        self.assertEqual(ship.get_id(), '077')
+        self.assertEqual(ship.english_name(), 'Enterprise')
+        self.assertEqual(ship.id(), '077')
 
     def test_get_invalid_ship_general(self):
         '''
@@ -65,9 +65,9 @@ class TestShip(unittest.TestCase):
         providing either name or id of the ship.
         '''
         ship_by_name = self.api.get_ship('enterprise')
-        self.assertEqual(ship_by_name.get_english_name(), 'Enterprise')
-        self.assertEqual(ship_by_name.get_id(), '077')
+        self.assertEqual(ship_by_name.english_name(), 'Enterprise')
+        self.assertEqual(ship_by_name.id(), '077')
 
         ship_by_id = self.api.get_ship_by_id('077')
-        self.assertEqual(ship_by_id.get_english_name(), 'Enterprise')
-        self.assertEqual(ship_by_id.get_id(), '077')
+        self.assertEqual(ship_by_id.english_name(), 'Enterprise')
+        self.assertEqual(ship_by_id.id(), '077')
