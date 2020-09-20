@@ -142,34 +142,34 @@ class AzurShip:
             'voice': Union[_Artist, None]
         }) = ship_data.get('misc')
 
-    def get_id(self) -> str:
+    def id(self) -> str:
         return self.id
 
-    def get_all_name_langs(self) -> List[str]:
+    def all_name_langs(self) -> List[str]:
         '''
         Returns a list of all languages that is available for the ship.
         If the name of that language is None, the language will not be in the list.
         '''
         return [name for name in self.names if name is not None]
 
-    def get_all_names(self) -> List[str]:
+    def all_names(self) -> List[str]:
         '''
         Returns a list of all names available for the ship.
         If the name in a specific language is None, it will not be in the list.
         '''
         return [self.names[name] for name in self.names if name is not None]
 
-    def get_code_name(self) -> str:
+    def code_name(self) -> str:
         return self.names.get('code')
 
-    def get_english_name(self) -> str:
+    def english_name(self) -> str:
         return self.names.get('en')
 
-    def get_chinese_name(self) -> Union[str, None]:
+    def chinese_name(self) -> Union[str, None]:
         return self.names.get('ch')
 
-    def get_japanese_name(self) -> Union[str, None]:
+    def japanese_name(self) -> Union[str, None]:
         return self.names.get('jp')
 
-    def get_korean_name(self) -> Union[str, None]:
+    def korean_name(self) -> Union[str, None]:
         return self.names.get('kr')
