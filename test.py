@@ -52,6 +52,18 @@ class TestStringMethods(unittest.TestCase):
         '''
         self.api.getAllShipsFromFaction(faction='Sakura Empire')
 
+    def test_get_all_equipment_by_lang(self):
+        '''
+        No assertion as this is for general testing
+        '''
+        gun = self.api.getAllEquipmentsByLang('en')
+
+    def test_get_equipment_by_name(self):
+        '''
+        Test for one language and assume other languages are correct
+        '''
+        gun = self.api.getEquipmentByEnglishName('Prototype Quadruple 356mm Main Gun Mount MkB')
+
 
 if __name__ == '__main__':
     unittest.main(failfast=True)

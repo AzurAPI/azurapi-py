@@ -201,12 +201,12 @@ class AzurAPI:
     
         for equipment in equipment_list:
             
-            equipment_names = equipment_list[equipment]["names"]
+            equipment_names = equipment["names"]
             
             if equipment_names[language] is None:
                 continue
                 
-            found_equipments.append(equipment_list[equipment])
+            found_equipments.append(equipment)
         
         return found_equipments
     
